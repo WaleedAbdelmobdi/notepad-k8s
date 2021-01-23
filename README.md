@@ -27,8 +27,9 @@ Push the image to docker registery
 
 ## Usage 
 
-`$ git clone `
-`$ cd `
+`$ git clone https://github.com/WaleedAbdelmobdi/notepad-k8s.git `
+
+`$ cd notepad-k8s `
 
 Create secret to pull image from the private registery
 
