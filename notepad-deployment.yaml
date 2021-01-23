@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: notepad
+    name: notepad
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: notepad
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+           maxSurge: 1
+           maxUnavailable: 1
+    template:
+        metadata:
+            labels:
+                app: notepad
+        spec:
+            containers:
+              - env:
+                  - name: SPRING_PROFILES_ACTIVE
+                    value: test
+                  - name: ENV_TEST_MYSQL_HOST
+                    value: mysql
+                image:  waleedhassan/notepad:v1
+                imagePullPolicy: "Always"
+
+                name: notepad
+                ports:
+                  - containerPort: 8080
+            imagePullSecrets:
+              - name: regcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    labels:
+        app: notepad
+    name: notepad
+spec:
+    ports:
+      - name: "http"
+        port: 8080
+        targetPort: 8080
+    selector:
+        app: notepad
+status:
+    loadBalancer: {}
+
